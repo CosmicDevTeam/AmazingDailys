@@ -1,0 +1,65 @@
+prefix: "&g(DAILY) &r"
+
+
+
+#Creator Messages:
+
+slot-error-numeric: "&4El slot del item decorativo debe ser numerico!"
+
+create-error-arguments: "&4Invalidos los argumentos, deben ser de tipo identifier:slot:permission"
+
+daily-already-exists: "&4El daily {DAILY} ya existe, intenta nuevamente con otro nombre!"
+
+daily-created-succesfully: "{PREFIX} &aEl daily {DAILY} fue creado con exito con el permiso {PERMISSION}"
+
+
+
+#Deleted messages:
+
+daily-deleted-succesfully: "&aEl daily {DAILY} fue eliminado con exito"
+
+
+
+#Items messages:
+
+error-items-arguments: "&4Intenta usando /daily rewards (identifier)!"
+
+items-placed-succesfully: "&aPusiste los items del daily {DAILY} con exito!"
+
+
+
+invalid-item-hand: "&4Debes tener un item en mano!"
+
+daily-not-exists: "&4El daily {DAILY} no existe"
+
+daily-opened-succesfully: "&aRecibiste el daily {DAILY} con exito!"
+
+daily-cooldown: "&4Tienes cooldown, tiempo restante {COOLDOWN}"
+
+daily-no-permission: "&4No tienes el permiso {PERMISSION}"
+
+daily-dont-items: "&4El daily {DAILY} no tiene items, intentalo mas tarde"
+
+
+
+#Sounds Daily:
+
+sound-succesfully: "note.bell"
+
+sound-error: "note.harp"
+
+
+
+#Decorative Messages
+
+decorative-error-rename: "&4Intenta usando /decorative rename (name)"
+
+decorative-renamed-succesfully: "&aEl nombre de tu item en mano fue cambiado a {NAME}"
+
+
+
+
+
+decorative-error-lore: "&4Intenta usando /decorative lore (name)"
+
+decorative-lore-succesfully: "&aEl lore de tu item en mano fue cambiado a {NAME}"
