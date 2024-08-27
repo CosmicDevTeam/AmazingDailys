@@ -1,0 +1,11 @@
+name: DailyRewards
+version: 1.0.0
+author: Zephyrhz
+main: zephy\daily\Loader
+api: 5.0.0
+
+permissions: 
+    daily.default:
+       default: true
+    daily.op:
+       default: op
