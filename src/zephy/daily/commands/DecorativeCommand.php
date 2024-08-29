@@ -68,7 +68,7 @@ class DecorativeCommand extends Command
                 break;
         }
     }
-    public static function getPlugin(): Loader {
+    public function getPlugin(): Loader {
         return Loader::getInstance();
     } 
 }
