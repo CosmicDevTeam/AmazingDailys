@@ -22,7 +22,7 @@ class Loader extends PluginBase
         self::setInstance($this);
         $this->saveResource("messages.yml");
         $this->getServer()->getCommandMap()->registerAll(
-            "Daily",
+            "AmazingDailys",
             [
                 new DailyCommand(),
                 new DecorativeCommand()
