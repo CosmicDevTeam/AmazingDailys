@@ -7,6 +7,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use zephy\daily\utils\PermissionUtils;
+use zephy\daily\Loader;
 use zephy\daily\utils\TextUtils;
 
 class DecorativeCommand extends Command
@@ -41,7 +42,9 @@ class DecorativeCommand extends Command
                 $item->setCustomName(TextFormat::colorize($args[1]));
 
                 $sender->getInventory()->setItemInHand($item);
-                $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-renamed-succesfully"), [
+                $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages
+                                                              
+                                                              ()->get("decorative-renamed-succesfully"), [
                     "{NAME}" => $args[1]
                 ]));
                 break;
@@ -65,4 +68,7 @@ class DecorativeCommand extends Command
                 break;
         }
     }
+    public static function getPlugin(): Loader {
+        return Loader::getInstance();
+    } 
 }
