@@ -9,6 +9,7 @@ use zephy\daily\forms\admin\CreatorForm;
 use zephy\daily\forms\admin\DeleteForm;
 use zephy\daily\forms\admin\ItemsMenu;
 use zephy\daily\forms\DailyMenu;
+use zephy\daily\Loader;
 use zephy\daily\manager\DailyFactory;
 use zephy\daily\utils\PermissionUtils;
 use zephy\daily\utils\TextUtils;
@@ -66,4 +67,7 @@ class DailyCommand extends Command
                 }
         }
     }
+    public function getPlugin(): Loader {
+        return Loader::getInstance();
+    } 
 }
