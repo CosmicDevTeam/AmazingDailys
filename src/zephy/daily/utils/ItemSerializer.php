@@ -9,6 +9,7 @@ use pocketmine\item\VanillaItems;
 use pocketmine\nbt\LittleEndianNbtSerializer;
 use pocketmine\nbt\TreeRoot;
 use RuntimeException;
+use zephy\daily\Loader;
 
 class ItemSerializer
 {
@@ -34,7 +35,7 @@ class ItemSerializer
         try {
             $item = Item::nbtDeserialize($serializer->read(base64_decode($data))->mustGetCompoundTag());
         } catch (SavedDataLoadingException | Exception $error) {
-            throw new RuntimeException("Error during decoing of an item, incorrect item: " . $error->getMessage() . ", data " . $data);
+            Loader::getInstance()->getLogger()->error("Error during decoing of an item, incorrect item: " . $error->getMessage() . ", data " . $data);
             return null;
         }
         return $item;

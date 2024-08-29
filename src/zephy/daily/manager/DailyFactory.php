@@ -3,6 +3,7 @@
 namespace zephy\daily\manager;
 
 use pocketmine\item\Item;
+use pocketmine\item\VanillaItems;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 use zephy\daily\Loader;
@@ -73,7 +74,7 @@ class DailyFactory
             }
 
 
-            $this->addDaily($identifier, $data["slot"], ItemSerializer::decodeItem($data["decorative"]), $data["permission"]);
+            $this->addDaily($identifier, $data["slot"], ItemSerializer::decodeItem($data["decorative"]) ?? VanillaItems::DIAMOND(), $data["permission"]);
             $daily = $this->getDaily($identifier);
             $daily->setRewards($rewards);
             foreach ($data["cooldowns"] as $player => $time) {
