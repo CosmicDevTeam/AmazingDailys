@@ -13,8 +13,10 @@ use zephy\daily\Loader;
 use zephy\daily\manager\DailyFactory;
 use zephy\daily\utils\PermissionUtils;
 use zephy\daily\utils\TextUtils;
+use pocketmine\plugin\PluginOwned;
+use pocketmine\plugin\Plugin;
 
-class DailyCommand extends Command
+class DailyCommand extends Command implements PluginOwned
 {
     public function __construct()
     {
@@ -67,7 +69,7 @@ class DailyCommand extends Command
                 }
         }
     }
-    public function getPlugin(): Loader {
+    public function getPluginOwned() : Plugin{
         return Loader::getInstance();
     } 
 }
