@@ -5,7 +5,7 @@ main: zephy\daily\Loader
 api: 5.0.0
 
 permissions: 
-    daily.default:
+    amazingdailys.default:
        default: true
-    daily.op:
+    amazingdailys.op:
        default: op
