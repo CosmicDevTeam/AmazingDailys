@@ -9,8 +9,10 @@ use pocketmine\utils\TextFormat;
 use zephy\daily\utils\PermissionUtils;
 use zephy\daily\Loader;
 use zephy\daily\utils\TextUtils;
+use pocketmine\plugin\PluginOwned;
+use pocketmine\plugin\Plugin;
 
-class DecorativeCommand extends Command
+class DecorativeCommand extends Command implements PluginOwned
 {
     public function __construct()
     {
@@ -68,7 +70,7 @@ class DecorativeCommand extends Command
                 break;
         }
     }
-    public function getPlugin(): Loader {
+    public function getPluginOwned() : Plugin{
         return Loader::getInstance();
     } 
 }
