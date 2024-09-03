@@ -58,8 +58,9 @@ class DailyFactory
                 "cooldowns" => $cooldowns,
                 "permission" => $daily->getPermission()
             ]);
-            $config->save();
+            
         }
+        $config->save();
     }
     public function loadAll(): void
     {
