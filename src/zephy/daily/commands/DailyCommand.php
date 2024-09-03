@@ -15,9 +15,11 @@ use zephy\daily\utils\PermissionUtils;
 use zephy\daily\utils\TextUtils;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\Plugin;
+use pocketmine\utils\TextFormat;
 
 class DailyCommand extends Command implements PluginOwned
 {
+
     public function __construct()
     {
         parent::__construct("daily", "Open daily rewards", null, ["rewards"]);
@@ -35,44 +37,46 @@ class DailyCommand extends Command implements PluginOwned
             return;
         }
 
-        switch ($args[0]) {
-            case "create":
-                if ($sender->hasPermission(PermissionUtils::ADMIN)) {
-                    $sender->sendForm(new CreatorForm());
-                    return;
-                }
-                break;
-            case "delete":
-                if ($sender->hasPermission(PermissionUtils::ADMIN)) {
-                    $sender->sendForm(new DeleteForm());
-                    return;
-                }
-                break;
-            case "setitems":
-            case "rewards":
-                if ($sender->hasPermission(PermissionUtils::ADMIN)) {
-                    if (!isset($args[1])) {
-                        $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("error-items-arguments")));
-                        return;
-                    }
+        if (!$sender->hasPermission(PermissionUtils::ADMIN)) {
+            $sender->sendMessage(TextFormat::colorize("&cYou don't have permission to use this command"));
+            return;
+        }
 
-                    if (is_null(DailyFactory::getInstance()->getDaily($args[1]))) {
-                        $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("daily-not-exists"), [
-                            "{DAILY}" => $args[1]
-                        ]));
-                        return;
-                    }
+        if ($args[0] === "create") {
+            $sender->sendForm(new CreatorForm());
+            return;
+        }
 
-                    $daily = DailyFactory::getInstance()->getDaily($args[1]);
-                    ItemsMenu::send($sender, $daily);
-                    break;
-                }
+        if ($args[0] === "delete") {
+            $sender->sendForm(new DeleteForm());
+            return;
+        }
+
+        if ($args[0] === "setitems") {
+            if (!isset($args[1])) {
+                $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("error-items-arguments")));
+                return;
+            }
+            $this->handleSetItems($sender, $args[1]);
+            return;
         }
     }
-    
+
+    public function handleSetItems(Player $sender, string $identifier): void
+    {
+        if (is_null(DailyFactory::getInstance()->getDaily($identifier))) {
+            $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("daily-not-exists"), [
+                "{DAILY}" => $identifier
+            ]));
+            return;
+        }
+        ItemsMenu::send($sender, DailyFactory::getInstance()->getDaily($identifier));
+        return;
+    }
+
     public function getOwningPlugin(): Plugin
     {
         return Loader::getInstance();
     }
-
+    
 }
