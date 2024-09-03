@@ -8,21 +8,19 @@ use pocketmine\permission\PermissionManager;
 
 final class PermissionRegister
 {
-
     public static function destroy(string $permission): void
     {
-        if (!self::isAlreadyRegistered($permission)) {
+        if (PermissionRegister::isAlreadyRegistered($permission)) {
             PermissionManager::getInstance()->removePermission($permission);
             $perm = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_OPERATOR);
-            $perm->removeChild($permission, true);
+            $perm->removeChild($permission);
         }
     }
 
     public static function register(string $permission): void
     {
-        if (!self::isAlreadyRegistered($permission)) {
+        if (!PermissionRegister::isAlreadyRegistered($permission)) {
             PermissionManager::getInstance()->addPermission(new Permission($permission));
-
             $perm = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_OPERATOR);
             $perm->addChild($permission, true);
         }
@@ -30,9 +28,7 @@ final class PermissionRegister
 
     public static function isAlreadyRegistered(string $permission): bool
     {
-        if (PermissionManager::getInstance()->getPermission($permission) !== null) {
-            return true;
-        }
-        return false;
+        return PermissionManager::getInstance()->getPermission($permission) !== null;
     }
+    
 }

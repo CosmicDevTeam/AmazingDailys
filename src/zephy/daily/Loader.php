@@ -28,9 +28,8 @@ class Loader extends PluginBase
                 new DecorativeCommand()
             ]
         );
-        if (!InvMenuHandler::isRegistered()) {
-            InvMenuHandler::register($this);
-        }
+
+        if (!InvMenuHandler::isRegistered()) InvMenuHandler::register($this);
         DailyFactory::getInstance()->loadAll();
     }
 

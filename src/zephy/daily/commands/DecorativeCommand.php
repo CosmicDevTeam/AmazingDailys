@@ -20,29 +20,24 @@ class DecorativeCommand extends Command implements PluginOwned
         $this->setPermission(PermissionUtils::ADMIN);
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
-        if (!$sender instanceof Player) return;
+        if (!$sender instanceof Player || !isset($args[0])) return;
 
-        if (!isset($args[0])) {
+        if ($sender->getInventory()->getItemInHand()->isNull()) {
+            $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
             return;
         }
 
-        switch ($args[0]) {
+        switch (strtolower($args[0])) {
             case "rename":
             case "customname":
                 if (!isset($args[1])) {
                     $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-error-rename")));
                     return;
                 }
-                if ($sender->getInventory()->getItemInHand()->isNull()) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
-                    return;
-                }
-
                 $item = clone $sender->getInventory()->getItemInHand();
                 $item->setCustomName(TextFormat::colorize($args[1]));
-
                 $sender->getInventory()->setItemInHand($item);
                 $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages
                                                               
@@ -55,14 +50,8 @@ class DecorativeCommand extends Command implements PluginOwned
                     $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-error-lore")));
                     return;
                 }
-                if ($sender->getInventory()->getItemInHand()->isNull()) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
-                    return;
-                }
-
                 $item = clone $sender->getInventory()->getItemInHand();
                 $item->setLore([TextFormat::colorize($args[1])]);
-
                 $sender->getInventory()->setItemInHand($item);
                 $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-lore-succesfully"), [
                     "{NAME}" => $args[1]
