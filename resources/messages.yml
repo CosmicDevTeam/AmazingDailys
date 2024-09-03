@@ -63,3 +63,5 @@ decorative-renamed-succesfully: "&aEl nombre de tu item en mano fue cambiado a {
 decorative-error-lore: "&4Intenta usando /decorative lore (name)"
 
 decorative-lore-succesfully: "&aEl lore de tu item en mano fue cambiado a {NAME}"
+
+decorative-error-arguments: "&4Intenta usando /decorative (rename | lore)"

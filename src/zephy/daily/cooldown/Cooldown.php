@@ -1,6 +1,7 @@
 <?php
 
-namespace zephy\daily\cooldown;
+namespace zephy\daily\cooldown;
+
 
 final class Cooldown
 {
@@ -14,15 +15,12 @@ final class Cooldown
 
     public function inCooldown(string $player): bool
     {
-        if (isset($this->cooldowns[$player])) {
-            return $this->cooldowns[$player] > time();
-        }
-        return false;
+        return isset($this->cooldowns[$player]) && $this->cooldowns[$player] > time();
     }
 
     public function getCooldown(string $player): int
     {
-        return $this->cooldowns[$player] - time();
+        return $this->inCooldown($player) ? $this->cooldowns[$player] - time() : 0;
     }
 
     public function addCooldown(string $player, int $time): void
@@ -32,6 +30,7 @@ final class Cooldown
 
     public function removeCooldown(string $player): void
     {
-        $this->cooldowns[$player] = 0;
+        unset($this->cooldowns[$player]);
     }
+
 }

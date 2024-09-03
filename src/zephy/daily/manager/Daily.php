@@ -63,4 +63,5 @@ final class Daily
     {
         return $this->cooldown;
     }
+    
 }
