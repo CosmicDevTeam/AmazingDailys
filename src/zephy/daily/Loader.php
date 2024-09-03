@@ -31,11 +31,11 @@ class Loader extends PluginBase
         if (!InvMenuHandler::isRegistered()) {
             InvMenuHandler::register($this);
         }
-        DailyFactory::getInstance()->loadAll();
+        DailyFactory::getInstance()->getStorage()->findAll();
     }
 
     protected function onDisable(): void
     {
-        DailyFactory::getInstance()->saveAll();
+        DailyFactory::getInstance()->getStorage()->saveAll();
     }
 }
