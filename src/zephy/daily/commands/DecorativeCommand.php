@@ -25,52 +25,58 @@ class DecorativeCommand extends Command implements PluginOwned
         if (!$sender instanceof Player) return;
 
         if (!isset($args[0])) {
+            $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-error-arguments")));
             return;
         }
 
-        switch ($args[0]) {
-            case "rename":
-            case "customname":
-                if (!isset($args[1])) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-error-rename")));
-                    return;
-                }
-                if ($sender->getInventory()->getItemInHand()->isNull()) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
-                    return;
-                }
+        if ($args[0] === "rename" || $args[0] === "customname") {
+            $this->handleRename($sender, $args[1]);
+            return;
+        }
 
-                $item = clone $sender->getInventory()->getItemInHand();
-                $item->setCustomName(TextFormat::colorize($args[1]));
-
-                $sender->getInventory()->setItemInHand($item);
-                $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages
-                                                              
-                                                              ()->get("decorative-renamed-succesfully"), [
-                    "{NAME}" => $args[1]
-                ]));
-                break;
-            case "lore":
-                if (!isset($args[1])) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-error-lore")));
-                    return;
-                }
-                if ($sender->getInventory()->getItemInHand()->isNull()) {
-                    $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
-                    return;
-                }
-
-                $item = clone $sender->getInventory()->getItemInHand();
-                $item->setLore([TextFormat::colorize($args[1])]);
-
-                $sender->getInventory()->setItemInHand($item);
-                $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-lore-succesfully"), [
-                    "{NAME}" => $args[1]
-                ]));
-                break;
+        if ($args[0] === "lore") {
+            $this->handleLore($sender, $args[1]);
+            return;
         }
     }
-    public function getPluginOwned() : Plugin{
+
+    public function handleRename(Player $sender, string $name): void
+    {
+        if ($sender->getInventory()->getItemInHand()->isNull()) {
+            $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
+            return;
+        }
+
+        $item = clone $sender->getInventory()->getItemInHand();
+        $item->setCustomName(TextFormat::colorize($name));
+
+        $sender->getInventory()->setItemInHand($item);
+        $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-renamed-succesfully"), [
+            "{NAME}" => $name
+        ]));
+        return;
+    }
+
+    public function handleLore(Player $sender, string $name): void
+    {
+        if ($sender->getInventory()->getItemInHand()->isNull()) {
+            $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("invalid-item-hand")));
+            return;
+        }
+
+        $item = clone $sender->getInventory()->getItemInHand();
+        $item->setLore([TextFormat::colorize($name)]);
+
+        $sender->getInventory()->setItemInHand($item);
+        $sender->sendMessage(TextUtils::formatMessage(TextUtils::getMessages()->get("decorative-lore-succesfully"), [
+            "{NAME}" => $name
+        ]));
+        return;
+    }
+    
+    public function getOwningPlugin(): Plugin
+    {
         return Loader::getInstance();
-    } 
+    }
+
 }

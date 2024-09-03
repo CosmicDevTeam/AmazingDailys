@@ -3,10 +3,8 @@
 namespace zephy\daily\manager;
 
 use pocketmine\item\Item;
-use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
-use zephy\daily\Loader;
-use zephy\daily\utils\ItemSerializer;
+use zephy\daily\storage\StorageManager;
 
 class DailyFactory
 {
@@ -16,6 +14,8 @@ class DailyFactory
     }
 
     private array $dailys = [];
+
+    public StorageManager $storage;
 
     public function getDailys(): array
     {
@@ -30,56 +30,24 @@ class DailyFactory
     public function addDaily(string $identifier, int $slot, Item $decorative, string $permission): void
     {
         $this->dailys[$identifier] = new Daily($identifier, $decorative, $permission, $slot);
+        $this->dailys[$identifier]->setNeedSave(true);
     }
 
     public function destroy(string $identifier): void
     {
-        unset($this->dailys[array_search($identifier, $this->dailys)]);
-    }
-
-    public function saveAll(): void
-    {
-        $config = new Config(Loader::getInstance()->getDataFolder() . "dailys.json", Config::JSON);
-
-        foreach ($this->getDailys() as $daily) {
-            $rewards = [];
-            foreach ($daily->getRewards() as $reward) {
-                $rewards[] = ItemSerializer::encodeItem($reward);
-            }
-            $cooldowns = [];
-            foreach ($daily->getCooldown()->getCooldowns() as $player => $cooldown) {
-                $cooldowns[$player] = $daily->getCooldown()->getCooldown($player);
-           } 
-
-            $config->set($daily->getName(), [
-                "rewards" => $rewards,
-                "decorative" => ItemSerializer::encodeItem($daily->getDecorativeItem()),
-                "slot" => $daily->getSlot(),
-                "cooldowns" => $cooldowns,
-                "permission" => $daily->getPermission()
-            ]);
-            
+        if (!isset($this->dailys[$identifier])) {
+            return;
         }
-        $config->save();
+        unset($this->dailys[$identifier]);
+        $this->getStorage()->saveAll();
     }
-    public function loadAll(): void
+
+    public function getStorage(): StorageManager
     {
-        $config = new Config(Loader::getInstance()->getDataFolder() . "dailys.json", Config::JSON);
-
-        foreach ($config->getAll() as $identifier => $data) {
-
-            $rewards = [];
-            foreach ($data["rewards"] as $item) {
-                $rewards[] = ItemSerializer::decodeItem($item);
-            }
-
-
-            $this->addDaily($identifier, $data["slot"], ItemSerializer::decodeItem($data["decorative"]), $data["permission"]);
-            $daily = $this->getDaily($identifier);
-            $daily->setRewards($rewards);
-            foreach ($data["cooldowns"] as $player => $time) {
-                $daily->getCooldown()->addCooldown($player, $time);
-            }
+        if ($this->storage === null) {
+            $this->storage = new StorageManager();
         }
+        return $this->storage;
     }
+
 }

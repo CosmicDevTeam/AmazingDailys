@@ -8,13 +8,13 @@ use zephy\daily\permissions\PermissionRegister;
 
 final class Daily
 {
-
     private Cooldown $cooldown;
+    private bool $needSave = false;
 
     public function __construct(
-        readonly private string $name,
-        readonly private Item $decorative,
-        readonly private string $permission,
+        private string $name,
+        private Item $decorative,
+        private string $permission,
         private int $slot,
         private array $items = [],
         private array $cooldowns = []
@@ -22,7 +22,6 @@ final class Daily
         $this->cooldown = new Cooldown();
         PermissionRegister::register($permission);
     }
-
 
     public function getName(): string
     {
@@ -57,10 +56,22 @@ final class Daily
     public function setRewards(array $rewards): void
     {
         $this->items = $rewards;
+        $this->setNeedSave(true);
     }
 
     public function getCooldown(): Cooldown
     {
         return $this->cooldown;
     }
+
+    public function setNeedSave(bool $needSave): void
+    {
+        $this->needSave = $needSave;
+    }
+
+    public function isNeedSave(): bool
+    {
+        return $this->needSave;
+    }
+
 }
