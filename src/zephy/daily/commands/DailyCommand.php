@@ -69,7 +69,7 @@ class DailyCommand extends Command implements PluginOwned
                 }
         }
     }
-    public function getPluginOwned() : Plugin{
+    public function getOwningPlugin() : Plugin{
         return Loader::getInstance();
     } 
 }
