@@ -70,7 +70,7 @@ class DecorativeCommand extends Command implements PluginOwned
                 break;
         }
     }
-    public function getPluginOwned() : Plugin{
+    public function getOwningPlugin() : Plugin{
         return Loader::getInstance();
     } 
 }
